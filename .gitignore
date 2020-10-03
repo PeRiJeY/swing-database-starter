@@ -26,3 +26,5 @@ log/
 # mac files : 
 .DS_Store
 /target/
+/.classpath
+/.project

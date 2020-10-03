@@ -23,12 +23,19 @@
  */
 package net.isetjb;
 
-import net.isetjb.config.I18N;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
+
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+
 import org.apache.log4j.Logger;
+
+import net.isetjb.config.I18N;
 
 /**
  * Frame1 class.
@@ -61,7 +68,15 @@ public class Frame1 extends JInternalFrame
         //add compnent to the frame :
         getContentPane().setLayout(new FlowLayout(FlowLayout.LEFT));
         getContentPane().add(jButton1);
-
+        
+        jButton1.addActionListener(new ActionListener()
+        {
+          public void actionPerformed(ActionEvent e)
+          {
+        	  JOptionPane.showMessageDialog(Frame1.this, "Test!!");
+          }
+        });
+        
         setVisible(false);
 
         log.debug("End of constructor.");

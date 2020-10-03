@@ -23,238 +23,142 @@
  */
 package net.isetjb.product;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
-import net.isetjb.dao.DAOConnection;
-import net.isetjb.dao.Repository;
+import java.util.List;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+
+import net.isetjb.config.HibernateUtil;
+import net.isetjb.dao.Repository;
 
 /**
  * The Product repository implementation.
  *
  * @author Nafaa Friaa (nafaa.friaa@isetjb.rnu.tn)
  */
-public class ProductRepository implements Repository<ProductBean>
-{
-    final static Logger log = Logger.getLogger(ProductRepository.class);
+public class ProductRepository implements Repository<ProductBean> {
+	final static Logger log = Logger.getLogger(ProductRepository.class);
 
-    /**
-     * Find one item by id.
-     *
-     * @param id
-     * @return
-     */
-    @Override
-    public ProductBean find(long id)
-    {
-        log.debug("Start method...");
+	/**
+	 * Find one item by id.
+	 *
+	 * @param id
+	 * @return
+	 */
+	@Override
+	public ProductBean find(long id) {
+		log.debug("Start method...");
 
-        ProductBean obj = null;
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		ProductBean obj = session.find(ProductBean.class, id);
 
-        try
-        {
-            PreparedStatement prepared = DAOConnection.getInstance().prepareStatement(
-                    "SELECT * FROM products WHERE id=?");
+		log.debug("End method.");
 
-            prepared.setLong(1, id);
+		return obj;
 
-            ResultSet result = prepared.executeQuery();
+	}
 
-            if (result.first())
-            {
-                obj = map(result);
-            }
+	/**
+	 * Find all items.
+	 *
+	 * @return
+	 */
+	@Override
+	public List<ProductBean> findAll() {
+		log.debug("Start method...");
 
-        } catch (SQLException e)
-        {
-            log.error("Error finding product : " + e);
-        }
+		List<ProductBean> products = new ArrayList<>();
 
-        log.debug("End method.");
+		Session session = HibernateUtil.getSessionFactory().openSession();
 
-        return obj;
+		CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<ProductBean> criteria = builder.createQuery(ProductBean.class);
+		criteria.from(ProductBean.class);
+		products = session.createQuery(criteria).getResultList();
 
-    }
+		log.debug("End method.");
 
-    /**
-     * Find all items.
-     *
-     * @return
-     */
-    @Override
-    public ArrayList<ProductBean> findAll()
-    {
-        log.debug("Start method...");
+		return products;
+	}
 
-        ArrayList<ProductBean> products = new ArrayList<>();
+	/**
+	 * Create new Object and return this new Object if success. Run only on tables
+	 * with auto_increment id column.
+	 *
+	 * @param obj
+	 * @return
+	 */
+	@Override
+	public ProductBean create(ProductBean obj) {
+		log.debug("Start method...");
 
-        try
-        {
-            PreparedStatement prepared = DAOConnection.getInstance().prepareStatement(
-                    "SELECT * FROM products");
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
 
-            ResultSet result = prepared.executeQuery();
+		// Add new Employee object
+		ProductBean objectToReturn = new ProductBean();
+		objectToReturn.setName(obj.getName());
+		objectToReturn.setPrice(obj.getPrice());
+		objectToReturn.setEnabled(obj.getEnabled());
 
-            while (result.next())
-            {
-                products.add(map(result));
-            }
+		session.save(objectToReturn);
 
-        } catch (SQLException e)
-        {
-            log.error("Error finding products : " + e);
-        }
+		session.getTransaction().commit();
 
-        log.debug("End method.");
+		return objectToReturn;
+	}
 
-        return products;
-    }
+	/**
+	 * Update a record.
+	 *
+	 * @param obj
+	 * @return
+	 */
+	@Override
+	public ProductBean update(ProductBean obj) {
+		log.debug("Start method...");
 
-    /**
-     * Create new Object and return this new Object if success. Run only on
-     * tables with auto_increment id column.
-     *
-     * @param obj
-     * @return
-     */
-    @Override
-    public ProductBean create(ProductBean obj)
-    {
-        log.debug("Start method...");
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
 
-        ProductBean objectToReturn = null;
+		session.merge(obj);
 
-        try
-        {
-            PreparedStatement prepared = DAOConnection.getInstance().prepareStatement(
-                    " INSERT INTO products (name, price, enabled) "
-                    + " VALUES(?, ?, ?) ", Statement.RETURN_GENERATED_KEYS);
+		session.getTransaction().commit();
 
-            prepared.setString(1, obj.getName());
-            prepared.setDouble(2, obj.getPrice());
-            prepared.setInt(3, obj.getEnabled());
+		log.debug("End method.");
 
-            // execute query and get the affected rows number :
-            int affectedRows = prepared.executeUpdate();
-            if (affectedRows != 0)
-            {
-                // get the latest inserted id :
-                ResultSet generatedKeys = prepared.getGeneratedKeys();
-                if (generatedKeys.next())
-                {
-                    log.debug("Inserted id : " + generatedKeys.getLong(1));
-                    objectToReturn = this.find(generatedKeys.getLong(1));
-                }
-            }
+		return obj;
+	}
 
-        } catch (SQLException e)
-        {
-            log.error("Error creating new product : " + e);
-        }
+	/**
+	 * Delete a single record.
+	 *
+	 * @param id
+	 * @return the number of affected rows.
+	 */
+	@Override
+	public int delete(long id) {
+		log.debug("Start method...");
 
-        log.debug("End method.");
+		int affectedRows = 0;
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		ProductBean objToDelete = find(id);
 
-        return objectToReturn;
-    }
+		if (objToDelete != null) {
+			session.beginTransaction();
+			session.delete(objToDelete);			
+			session.getTransaction().commit();
+		}
 
-    /**
-     * Update a record.
-     *
-     * @param obj
-     * @return
-     */
-    @Override
-    public ProductBean update(ProductBean obj)
-    {
-        log.debug("Start method...");
+		log.debug("End method.");
 
-        ProductBean objectToReturn = null;
+		return affectedRows;
+	}
 
-        try
-        {
-            PreparedStatement prepared = DAOConnection.getInstance().prepareStatement(
-                    " UPDATE products "
-                    + " SET name=?, "
-                    + " price=?, "
-                    + " enabled=? "
-                    + " WHERE id=? ");
-
-            prepared.setString(1, obj.getName());
-            prepared.setDouble(2, obj.getPrice());
-            prepared.setInt(3, obj.getEnabled());
-            prepared.setLong(4, obj.getId());
-
-            // execute query and get the affected rows number :
-            int affectedRows = prepared.executeUpdate();
-            if (affectedRows != 0)
-            {
-                log.debug("Updated id : " + obj.getId());
-                objectToReturn = this.find(obj.getId());
-            }
-
-        } catch (SQLException e)
-        {
-            log.error("Error updating product : " + e);
-        }
-
-        log.debug("End method.");
-
-        return objectToReturn;
-    }
-
-    /**
-     * Delete a single record.
-     *
-     * @param id
-     * @return the number of affected rows.
-     */
-    @Override
-    public int delete(long id)
-    {
-        log.debug("Start method...");
-
-        int affectedRows = 0;
-
-        try
-        {
-            PreparedStatement prepared = DAOConnection.getInstance().prepareStatement(
-                    " DELETE FROM products "
-                    + " WHERE id=? ");
-
-            prepared.setLong(1, id);
-
-            // execute query and get the affected rows number :
-            affectedRows = prepared.executeUpdate();
-
-        } catch (SQLException e)
-        {
-            log.error("Error deleteing product : " + e);
-        }
-
-        log.debug("End method.");
-
-        return affectedRows;
-    }
-
-    /**
-     * Map the current row of the given ResultSet to an Object.
-     *
-     * @param resultSet
-     * @return The mapped Object from the current row of the given ResultSet.
-     * @throws SQLException If something fails at database level.
-     */
-    private static ProductBean map(ResultSet resultSet) throws SQLException
-    {
-        ProductBean obj = new ProductBean();
-
-        obj.setId(resultSet.getLong("id"));
-        obj.setName(resultSet.getString("name"));
-        obj.setPrice(resultSet.getDouble("price"));
-        obj.setEnabled(resultSet.getInt("enabled"));
-
-        return obj;
-    }
 }

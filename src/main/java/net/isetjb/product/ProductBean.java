@@ -25,14 +25,30 @@ package net.isetjb.product;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * The Product Entity / Model Class.
  *
  * @author Nafaa Friaa (nafaa.friaa@isetjb.rnu.tn)
  */
+@Entity
+@Table(name="products")
 public class ProductBean implements Serializable
 {
-    private long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -7390623460425372101L;
+	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	private long id;
+	
     private String Name;
     private Double price;
     private int enabled;

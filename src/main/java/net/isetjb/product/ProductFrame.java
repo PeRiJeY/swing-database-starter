@@ -25,8 +25,9 @@ package net.isetjb.product;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
@@ -35,8 +36,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
-import net.isetjb.config.I18N;
+
 import org.apache.log4j.Logger;
+
+import net.isetjb.config.I18N;
 
 /**
  * Class used to display products list.
@@ -127,7 +130,7 @@ public class ProductFrame extends JInternalFrame
 
         // get data rows :
         ProductRepository productRepository = new ProductRepository();
-        ArrayList<ProductBean> products = productRepository.findAll();
+        List<ProductBean> products = productRepository.findAll();
 
         // transform ArrayList<> to Object[][] :
         for (ProductBean product : products)

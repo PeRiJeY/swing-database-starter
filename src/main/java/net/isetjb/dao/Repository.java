@@ -24,6 +24,9 @@
 package net.isetjb.dao;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import net.isetjb.product.ProductBean;
 
 /**
  * Interface Repository to define methods to be implemented.
@@ -45,7 +48,7 @@ public interface Repository<T>
      *
      * @return
      */
-    public ArrayList<T> findAll();
+    public List<ProductBean> findAll();
 
     /**
      * Create a new object and return it / else return null.

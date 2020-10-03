@@ -23,20 +23,23 @@
  */
 package net.isetjb;
 
-import net.isetjb.config.I18N;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
-import net.isetjb.product.ProductFrame;
+
 import org.apache.log4j.Logger;
+
+import net.isetjb.config.HibernateUtil;
+import net.isetjb.config.I18N;
+import net.isetjb.product.ProductFrame;
 
 /**
  * Desktop class.
@@ -69,7 +72,7 @@ public class Desktop extends JFrame
         // init frame :
         setTitle(I18N.lang("desktop.title"));
         Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
-        setBounds(0, 0, screenSize.width, screenSize.height);
+        setBounds(0, 0, (int)(screenSize.width*0.9), (int)(screenSize.height*0.9));
 
         // init desktop :
         getContentPane().add(jDesktopPane, BorderLayout.CENTER);
@@ -91,6 +94,7 @@ public class Desktop extends JFrame
 
             if (confirmBeforeExit())
             {
+            	HibernateUtil.shutdown();
                 System.exit(0);
             }
         });
@@ -125,8 +129,9 @@ public class Desktop extends JFrame
             {
                 log.debug("WindowEvent on " + ev.paramString());
 
-                if (confirmBeforeExit())
+                if (true || confirmBeforeExit())
                 {
+                	HibernateUtil.shutdown();
                     System.exit(0);
                 }
             }

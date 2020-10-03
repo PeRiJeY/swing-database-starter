@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package net.isetjb.config;
+package es.german.stock.gui.base;
 
 import java.io.IOException;
 import java.util.Properties;

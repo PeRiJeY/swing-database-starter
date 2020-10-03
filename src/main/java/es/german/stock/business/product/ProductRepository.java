@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.isetjb.product;
+package es.german.stock.business.product;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +32,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import net.isetjb.config.HibernateUtil;
-import net.isetjb.dao.Repository;
+import es.german.stock.business.base.HibernateUtil;
+import es.german.stock.business.base.Repository;
 
 /**
  * The Product repository implementation.

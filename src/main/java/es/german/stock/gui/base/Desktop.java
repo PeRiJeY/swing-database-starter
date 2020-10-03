@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.isetjb;
+package es.german.stock.gui.base;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -37,9 +37,10 @@ import javax.swing.JOptionPane;
 
 import org.apache.log4j.Logger;
 
-import net.isetjb.config.HibernateUtil;
-import net.isetjb.config.I18N;
-import net.isetjb.product.ProductFrame;
+import es.german.stock.business.base.HibernateUtil;
+import es.german.stock.gui.about.FrameAbout;
+import es.german.stock.gui.frame1.Frame1;
+import es.german.stock.gui.product.ProductFrame;
 
 /**
  * Desktop class.
@@ -129,7 +130,7 @@ public class Desktop extends JFrame
             {
                 log.debug("WindowEvent on " + ev.paramString());
 
-                if (true || confirmBeforeExit())
+                if (confirmBeforeExit())
                 {
                 	HibernateUtil.shutdown();
                     System.exit(0);

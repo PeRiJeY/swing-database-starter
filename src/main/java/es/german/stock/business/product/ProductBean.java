@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.isetjb.product;
+package es.german.stock.business.product;
 
 import java.io.Serializable;
 

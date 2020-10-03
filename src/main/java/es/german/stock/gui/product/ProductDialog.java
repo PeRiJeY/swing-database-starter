@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.isetjb.product;
+package es.german.stock.gui.product;
 
 import java.awt.Frame;
 import java.awt.GridLayout;
@@ -33,8 +33,12 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import net.isetjb.config.I18N;
+
 import org.apache.log4j.Logger;
+
+import es.german.stock.business.product.ProductBean;
+import es.german.stock.business.product.ProductRepository;
+import es.german.stock.gui.base.I18N;
 
 /**
  * Class used to display a dialog with add / edit form.

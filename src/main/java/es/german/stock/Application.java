@@ -21,56 +21,36 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.isetjb.dao;
+package es.german.stock;
 
-import java.util.ArrayList;
-import java.util.List;
+import org.apache.log4j.Logger;
 
-import net.isetjb.product.ProductBean;
+import es.german.stock.gui.base.Desktop;
+import es.german.stock.gui.base.I18N;
+import es.german.stock.gui.base.PROP;
 
 /**
- * Interface Repository to define methods to be implemented.
+ * Application class.
  *
  * @author Nafaa Friaa (nafaa.friaa@isetjb.rnu.tn)
  */
-public interface Repository<T>
+public class Application
 {
-    /**
-     * Find one item by id and return it if exist / else return null.
-     *
-     * @param id
-     * @return
-     */
-    public T find(long id);
+    final static Logger log = Logger.getLogger(Application.class);
 
-    /**
-     * Find all items and return a list.
-     *
-     * @return
-     */
-    public List<ProductBean> findAll();
+    public static void main(String[] args)
+    {
+        log.info("Initializing the application...");
 
-    /**
-     * Create a new object and return it / else return null.
-     *
-     * @param obj
-     * @return
-     */
-    public T create(T obj);
+        PROP.init();
+        I18N.init();
 
-    /**
-     * Update an existant object and return it / else return null.
-     *
-     * @param obj
-     * @return
-     */
-    public T update(T obj);
+        log.info("Starting " + PROP.getProperty("app.finalName") + " Application...");
 
-    /**
-     * Delete an item by id and return 1 on success.
-     *
-     * @param id
-     * @return
-     */
-    public int delete(long id);
+        // display the desktop frame :
+        new Desktop();
+
+        log.info("Application " + PROP.getProperty("app.finalName") + " started.");
+    }
+
 }

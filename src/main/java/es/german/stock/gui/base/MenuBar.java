@@ -21,9 +21,8 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package net.isetjb;
+package es.german.stock.gui.base;
 
-import net.isetjb.config.I18N;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import javax.swing.JMenu;

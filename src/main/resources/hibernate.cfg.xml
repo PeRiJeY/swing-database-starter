@@ -10,6 +10,6 @@
         <!-- <property name="hbm2ddl.auto">create-drop</property> -->
         <property name="hbm2ddl.auto">update</property>
         
-        <mapping class="net.isetjb.product.ProductBean"></mapping>
+        <mapping class="es.german.stock.business.product.ProductBean"></mapping>
     </session-factory>
 </hibernate-configuration>

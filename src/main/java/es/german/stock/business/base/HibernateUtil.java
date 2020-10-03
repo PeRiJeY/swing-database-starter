@@ -1,4 +1,4 @@
-package net.isetjb.config;
+package es.german.stock.business.base;
 
 import java.io.File;
 
